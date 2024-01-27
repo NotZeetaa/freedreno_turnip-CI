@@ -3,7 +3,7 @@ name: Build "turnip"
 on:
   workflow_dispatch:
   schedule:
-  - cron: "20 5 1,15 * *"
+  - cron: "0 5 * * *"
 
 jobs:
   start_building_turnip:
@@ -33,6 +33,6 @@ jobs:
       with:
         body: Turnip magisk module
         tag_name: github_run
-        name: Weekly Action Release
+        name: Daily Action Release
         files: |
            turnip_workdir/turnip.zip
