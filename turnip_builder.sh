@@ -134,7 +134,7 @@ id=turnip
 name=turnip
 version=v1.0
 versionCode=1
-author=MrMiy4mo
+author=MrMiy4mo & NotZeetaa
 description=Turnip is an open-source vulkan driver for devices with adreno GPUs.
 EOF
 
