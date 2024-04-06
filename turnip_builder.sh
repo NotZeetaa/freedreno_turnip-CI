@@ -3,6 +3,9 @@ green='\033[0;32m'
 red='\033[0;31m'
 nocolor='\033[0m'
 
+
+BOT_TOKEN="$token"
+CHAT_ID="$chat_id"
 deps="meson ninja patchelf unzip curl pip flex bison zip"
 workdir="$(pwd)/turnip_workdir"
 magiskdir="$workdir/turnip_module"
@@ -18,6 +21,7 @@ run_all(){
 	prepare_workdir
 	build_lib_for_android
 	port_lib_for_magisk
+	send_message
 }
 
 
@@ -155,4 +159,47 @@ EOF
 	fi
 }
 
+send_image_with_caption() {
+    local image_url="$1"
+    local caption="$2"
+    local temp_file="/tmp/image.jpg"
+
+    # Download the image
+    wget -q "$image_url" -O "$temp_file"
+
+    # Send the image with caption
+    curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendPhoto" \
+        -F chat_id="$CHAT_ID" \
+        -F photo=@"$temp_file" \
+        -F parse_mode="Markdown" \
+        -F caption="$caption"
+
+    # Clean up temporary file
+    rm "$temp_file"
+}
+
+# Main function
+main() {
+    local image_url="https://raw.githubusercontent.com/NotZeetaa/freedreno_turnip-CI/main/banner/vulkan.jpg"
+    local caption="*#Module #Universal*
+Freeadreno Turnip weekly release!
+
+[▪️ Download](https://www.pling.com/p/2125336/) | [Mirror](https://www.opendesktop.org/p/2125336/)
+[👨‍💻 GitHub](https://github.com/NotZeetaa/freedreno_turnip-CI)
+[☕️ Donate](http://notzeetaa.github.io/Donate-NotZeetaa)
+[📝 Changelog](https://gitlab.freedesktop.org/mesa/mesa/-/commits/main/?ref_type=HEADS)
+ 
+Credits:
+- [Ilhan-athn7](https://github.com/ilhan-athn7/freedreno_turnip-CI) - For the build script
+    
+Note:
+- If you appreciate my efforts, kindly consider supporting me with a small contribution for a coffee. Your generosity would mean a lot!
+- Built with LTO
+    
+By MrMiy4mo & @NotZeetaa"
+    
+    send_image_with_caption "$image_url" "$caption"
+}
+
 run_all
+main

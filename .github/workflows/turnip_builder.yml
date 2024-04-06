@@ -8,6 +8,11 @@ on:
 jobs:
   start_building_turnip:
     runs-on: ubuntu-22.04
+
+    env:
+      token: ${{ secrets.BOT_TOKEN }}
+      chat_id: ${{ secrets.CHAT_ID }}
+
     steps:
     - uses: actions/checkout@v3
 
